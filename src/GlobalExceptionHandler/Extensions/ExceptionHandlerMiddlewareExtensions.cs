@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using GlobalExceptionHandler.Exceptions;
 using GlobalExceptionHandler.Handlers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,44 +14,36 @@ public static class ExceptionHandlerMiddlewareExtensions
     
     public static IServiceCollection AddExceptionHandlers(this IServiceCollection services)
     {
-        var options = new ExceptionHandlerOptions();
-        
-        AddDefaultHandlers(options);
-        
-        services.AddSingleton(options);
+        GetOrInstantiateExceptionHandlerOptions(services);
         return services;
     }
     
     public static IServiceCollection AddExceptionHandlers(this IServiceCollection services, Action<ExceptionHandlerOptions> configure)
     {
-
-        var options = new ExceptionHandlerOptions();
-        
-        AddDefaultHandlers(options);
-        
+        var options = GetOrInstantiateExceptionHandlerOptions(services);
         configure(options);
-        
-        
-        services.AddSingleton(options);
         return services;
     }
     
     public static IServiceCollection AddExceptionHandlers(this IServiceCollection services, params Assembly[] assemblies)
     {
-        var options = new ExceptionHandlerOptions();
-        
-        AddDefaultHandlers(options);
-        
+        var options = GetOrInstantiateExceptionHandlerOptions(services);
         HandlersAssemblyRegister.AddExceptionHandlersClasses(assemblies, options);
-        
-        services.AddSingleton(options);
         return services;
     }
-    
+
+    private static ExceptionHandlerOptions GetOrInstantiateExceptionHandlerOptions(IServiceCollection services)
+    {
+        var options = services.BuildServiceProvider().GetService<ExceptionHandlerOptions>();
+        if (options != null) return options;
+        options = new ExceptionHandlerOptions();
+        AddDefaultHandlers(options);
+        services.AddSingleton(options);
+        return options;
+    }
 
     private static void AddDefaultHandlers(ExceptionHandlerOptions options)
     {
-        options.Add(typeof(InternalServiceException), new InternalServiceExceptionHandler());
         options.Add(typeof(UnauthorizedAccessException), new UnauthorizedAccessExceptionHandler());
         options.Add(typeof(InvalidCastException), new InvalidCastExceptionHandler());
     }
