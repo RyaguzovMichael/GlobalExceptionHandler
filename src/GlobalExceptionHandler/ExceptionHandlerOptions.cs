@@ -13,6 +13,8 @@ public sealed class ExceptionHandlerOptions
     
     public void Add(Type exceptionType, IExceptionHandler handler)
     {
+        if (Handlers.TryAdd(exceptionType, handler)) return;
+        Handlers.Remove(exceptionType);
         Handlers.Add(exceptionType, handler);
     }
 }

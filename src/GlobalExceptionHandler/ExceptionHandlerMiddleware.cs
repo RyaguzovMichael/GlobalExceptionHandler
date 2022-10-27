@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace GlobalExceptionHandler;
 
-public class ExceptionHandlerMiddleware
+internal class ExceptionHandlerMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly ExceptionHandlerOptions _options;
