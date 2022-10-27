@@ -1,3 +1,4 @@
+using System.Reflection;
 using GlobalExceptionHandler.Extensions;
 using GlobalExceptionHandlerExample.ExceptionHandlers;
 
@@ -8,6 +9,8 @@ services.AddExceptionHandlers(configure =>
 {
     configure.Add(typeof(InvalidOperationException), new InvalidOperationExceptionHandler());
 });
+services.AddExceptionHandlers(Assembly.GetExecutingAssembly());
+
 
 var app = builder.Build();
 

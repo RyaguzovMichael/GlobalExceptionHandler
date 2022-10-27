@@ -7,6 +7,13 @@ namespace GlobalExceptionHandler.Handlers;
 
 public class InvalidCastExceptionHandler : IExceptionHandler
 {
+    public Type ExceptionType { get; }
+    
+    public InvalidCastExceptionHandler()
+    {
+        ExceptionType = typeof(InvalidCastException);
+    }
+    
     public async Task HandleAsync(Exception exception, HttpContext context)
     {
         if (exception is InvalidCastException invalidCastException)

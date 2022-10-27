@@ -7,6 +7,13 @@ namespace GlobalExceptionHandler.Handlers;
 
 public class InternalServiceExceptionHandler : IExceptionHandler
 {
+    public Type ExceptionType { get; }
+    
+    public InternalServiceExceptionHandler()
+    {
+        ExceptionType = typeof(InternalServiceException);
+    }
+
     public async Task HandleAsync(Exception exception, HttpContext context)
     {
         if (exception is InternalServiceException internalServiceException)

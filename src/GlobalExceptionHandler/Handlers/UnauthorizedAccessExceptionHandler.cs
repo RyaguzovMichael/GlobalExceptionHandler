@@ -7,6 +7,13 @@ namespace GlobalExceptionHandler.Handlers;
 
 public class UnauthorizedAccessExceptionHandler : IExceptionHandler
 {
+    public Type ExceptionType { get; }
+    
+    public UnauthorizedAccessExceptionHandler()
+    {
+        ExceptionType = typeof(UnauthorizedAccessException);
+    }
+    
     public async Task HandleAsync(Exception exception, HttpContext context)
     {
         if (exception is UnauthorizedAccessException unauthorizedAccessException)

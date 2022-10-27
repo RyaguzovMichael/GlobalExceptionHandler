@@ -1,43 +1,59 @@
-﻿using GlobalExceptionHandler.Exceptions;
+﻿using System.Reflection;
+using GlobalExceptionHandler.Exceptions;
 using GlobalExceptionHandler.Handlers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace GlobalExceptionHandler.Extensions;
 
 public static class ExceptionHandlerMiddlewareExtensions
 {
+    public static void UseGlobalExceptionHandler(this IApplicationBuilder app)  
+    {  
+        app.UseMiddleware<ExceptionHandlerMiddleware>();  
+    }
+    
     public static IServiceCollection AddExceptionHandlers(this IServiceCollection services)
     {
-        services.TryAddSingleton<ExceptionHandlerOptions>();
-        var options = services.BuildServiceProvider().GetRequiredService<ExceptionHandlerOptions>();
+        var options = new ExceptionHandlerOptions();
         
         AddDefaultHandlers(options);
         
+        services.AddSingleton(options);
         return services;
     }
     
     public static IServiceCollection AddExceptionHandlers(this IServiceCollection services, Action<ExceptionHandlerOptions> configure)
     {
-        services.TryAddSingleton<ExceptionHandlerOptions>();
-        var options = services.BuildServiceProvider().GetRequiredService<ExceptionHandlerOptions>();
+
+        var options = new ExceptionHandlerOptions();
         
         AddDefaultHandlers(options);
         
         configure(options);
         
+        
+        services.AddSingleton(options);
         return services;
     }
     
-    public static void UseExceptionHandlerMiddleware(this IApplicationBuilder app)  
-    {  
-        app.UseMiddleware<ExceptionHandlerMiddleware>();  
+    public static IServiceCollection AddExceptionHandlers(this IServiceCollection services, params Assembly[] assemblies)
+    {
+        var options = new ExceptionHandlerOptions();
+        
+        AddDefaultHandlers(options);
+        
+        HandlersAssemblyRegister.AddExceptionHandlersClasses(assemblies, options);
+        
+        services.AddSingleton(options);
+        return services;
     }
+    
 
     private static void AddDefaultHandlers(ExceptionHandlerOptions options)
     {
-        options.Add<InternalServiceException>(new InternalServiceExceptionHandler());
-        options.Add<UnauthorizedAccessException>(new UnauthorizedAccessExceptionHandler());
+        options.Add(typeof(InternalServiceException), new InternalServiceExceptionHandler());
+        options.Add(typeof(UnauthorizedAccessException), new UnauthorizedAccessExceptionHandler());
+        options.Add(typeof(InvalidCastException), new InvalidCastExceptionHandler());
     }
 }

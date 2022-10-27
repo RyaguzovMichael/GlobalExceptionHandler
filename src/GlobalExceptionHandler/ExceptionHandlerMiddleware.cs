@@ -7,14 +7,16 @@ namespace GlobalExceptionHandler;
 
 public class ExceptionHandlerMiddleware
 {
-    private readonly RequestDelegate _next;    
+    private readonly RequestDelegate _next;
+    private readonly ExceptionHandlerOptions _options;
     
-    public ExceptionHandlerMiddleware(RequestDelegate next)    
+    public ExceptionHandlerMiddleware(RequestDelegate next, ExceptionHandlerOptions options)    
     {    
-        _next = next;    
+        _next = next;
+        _options = options;
     }    
     
-    public async Task Invoke(HttpContext context, ExceptionHandlerOptions options)    
+    public async Task Invoke(HttpContext context)    
     {    
         try    
         {    
@@ -22,7 +24,7 @@ public class ExceptionHandlerMiddleware
         }    
         catch (Exception exception)    
         {    
-            if (options.Handlers.TryGetValue(exception.GetType(), out IExceptionHandler? handler))
+            if (_options.Handlers.TryGetValue(exception.GetType(), out IExceptionHandler? handler))
             {
                 await handler.HandleAsync(exception, context);
             }
