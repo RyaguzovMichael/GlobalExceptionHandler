@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalExceptionHandler", "src\GlobalExceptionHandler\GlobalExceptionHandler.csproj", "{57A9AB00-83D8-4C41-B1B5-28881EE2E877}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlobalExceptionHandlerExample", "examples\GlobalExceptionHandlerExample\GlobalExceptionHandlerExample.csproj", "{4E6A9745-7347-4B81-8A9B-78CB7AE69AC4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{57A9AB00-83D8-4C41-B1B5-28881EE2E877}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57A9AB00-83D8-4C41-B1B5-28881EE2E877}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57A9AB00-83D8-4C41-B1B5-28881EE2E877}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E6A9745-7347-4B81-8A9B-78CB7AE69AC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E6A9745-7347-4B81-8A9B-78CB7AE69AC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E6A9745-7347-4B81-8A9B-78CB7AE69AC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E6A9745-7347-4B81-8A9B-78CB7AE69AC4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
